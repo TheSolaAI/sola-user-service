@@ -1,0 +1,52 @@
+name: 🐞 Bug Report
+description: Report something that's not working the way its intend.
+assignees:
+  - 'ashwanthbalakrishnan5'
+title: '🐞 [BUG] '
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Request URL
+      description: Give us the URL where you found the bug with query parameters (if any).
+      placeholder: https://solaai.xyz
+    validations:
+      required: true
+      
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the issue you are facing with steps to reproduce.
+    validations:
+      required: True
+  
+  - type: textarea
+    id: possible_solution
+    attributes:
+      label: Possible Solution
+      description: Add a possible solution to the bug.
+    validations:
+      required: false
+
+  - type: textarea
+    id: request
+    attributes:
+      label: Request Body
+      description: Add your request body here with headers (if necessary).
+    validations:
+      required: false
+
+  - type: textarea
+    id: response
+    attributes:
+      label: Response Body
+      description: Add your request body here.
+    validations:
+      required: false
+
+
+  - type: markdown
+    attributes:
+      value: |
+        Thanks 🙏 for reporting a bug!

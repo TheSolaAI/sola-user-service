@@ -1,0 +1,25 @@
+name: 💡 Feature Request
+description: Request a new feature or enhancement.
+assignees:
+  - 'ashwanthbalakrishnan5'
+title: '💡 [FEATURE] '
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Feature description
+    validations:
+      required: true
+
+  - type: input
+    id : url
+    attributes:
+      label: Endpoint URL
+      placeholder: https://solaai.xyz
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        Thanks 🙏 for creating a feature request!
