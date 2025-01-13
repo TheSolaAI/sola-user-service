@@ -1,27 +1,17 @@
-from sqlalchemy import ForeignKey, Integer, String
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.db.base import Base
+from sqlmodel import Field, Relationship, SQLModel
 
 
-class User(Base):
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    connect_wallet: Mapped[str] = mapped_column(String, nullable=True)
-    wallet_provider: Mapped[str] = mapped_column(String, nullable=True)
-    settings: Mapped["UserSettings"] = relationship(
-        "UserSettings", back_populates="user"
-    )
+class UserSettings(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id")
+    theme: str = Field(default="system")
+    voice_preference: str = Field(default="voice1")
+    emotion_choices: str = Field(default="")
+    user: "User" = Relationship(back_populates="settings")
 
 
-class UserSettings(Base):
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("users.id"), nullable=False
-    )
-    theme: Mapped[str] = mapped_column(String, nullable=False, default="system")
-    voice_preference: Mapped[str] = mapped_column(
-        String, nullable=False, default="voice1"
-    )
-    emotion_choices: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
-    user: Mapped["User"] = relationship("User", back_populates="settings")
+class User(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    connect_wallet: str = Field(default=None)
+    wallet_provider: str = Field(default=None)
+    settings: UserSettings = Relationship(back_populates="user")

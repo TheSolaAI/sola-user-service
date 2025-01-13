@@ -14,7 +14,8 @@ sentry-sdk = {extras = ["fastapi"], version = "*"}
 sqlalchemy = "*"
 alembic = "*"
 fastapi-migrate = "*"
-fastapi = {extras = ["standard"], version = "*"}
+fastapi = "*"
+sqlmodel = "*"
 
 [dev-packages]
 

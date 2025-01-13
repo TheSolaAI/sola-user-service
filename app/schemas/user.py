@@ -18,7 +18,7 @@ class UserSettings(BaseModel):
     user_id: int
     theme: str = "system"
     voice_preference: str = "voice1"
-    emotion_choices: dict = {}
+    emotion_choices: str = ""
 
     class Config:
         from_attributes = True

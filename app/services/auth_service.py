@@ -37,7 +37,7 @@ def update_user_settings(db: Session, user_id: int, settings: dict) -> UserSetti
             user_id=user_id,
             theme=settings.get("theme", "system"),
             voice_preference=settings.get("voice_preference", "voice1"),
-            emotion_choices=settings.get("emotion_choices", {}),
+            emotion_choices=settings.get("emotion_choices", ""),
         )
         db.add(user_settings)
     db.commit()
