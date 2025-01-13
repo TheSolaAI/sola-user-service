@@ -4,15 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "*"
 slowapi = "*"
-sqlalchemy = "*"
 uvicorn = "*"
 pydantic-settings = "*"
 pyjwt = "*"
 psycopg = {extras = ["pool", "binary"], version = "*"}
 pydantic = {extras = ["email"], version = "*"}
 sentry-sdk = {extras = ["fastapi"], version = "*"}
+sqlalchemy = "*"
+alembic = "*"
+fastapi-migrate = "*"
+fastapi = {extras = ["standard"], version = "*"}
 
 [dev-packages]
 

@@ -1,6 +1,7 @@
 import sentry_sdk
 from fastapi import FastAPI, Request
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi_migrate import Migrate
 from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
@@ -11,6 +12,7 @@ from starlette.responses import JSONResponse
 from app.api.v1.auth import router as auth_router
 from app.core.config import settings
 from app.core.logging_config import logger
+from app.db.base import Base
 
 sentry_sdk.init(
     dsn=settings.SENTRY_DSN,
@@ -50,6 +52,12 @@ def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded):
 app.add_middleware(SlowAPIMiddleware)
 
 app.include_router(auth_router, prefix="/api/v1/auth")
+
+
+if settings.SQLALCHEMY_DATABASE_URL:
+    migrate = Migrate(app, Base, settings.SQLALCHEMY_DATABASE_URL)
+else:
+    raise ValueError("SQLALCHEMY_DATABASE_URL must be set in the settings")
 
 
 @app.get("/health", tags=["Health"])

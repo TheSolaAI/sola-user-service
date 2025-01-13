@@ -69,7 +69,7 @@ jobs:
 
       - name: SSH into Vultr Docker Instance and Deploy
         run: |
-          ssh -o StrictHostKeyChecking=no root@${{ secrets.VULTR_INSTANCE_IP }} << 'EOF'
+          sshpass -p '${{ secrets.VULTR_INSTANCE_PASSWORD }}' ssh -o StrictHostKeyChecking=no root@${{ secrets.VULTR_INSTANCE_IP }} << 'EOF'
             docker login https://ewr.vultrcr.com/develop1 -u ${{ secrets.VULTR_REGISTRY_USER }} -p ${{ secrets.VULTR_REGISTRY_PASSWORD }}
 
             docker pull ewr.vultrcr.com/develop1/sola-auth-service:latest
