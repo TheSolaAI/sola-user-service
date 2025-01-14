@@ -12,6 +12,7 @@ class UserSettings(SQLModel, table=True):
 
 class User(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
-    connect_wallet: str = Field(default=None)
+    privy_wallet_id: str = Field(default=None)
+    wallet_id: str = Field(default=None)
     wallet_provider: str = Field(default=None)
     settings: UserSettings = Relationship(back_populates="user")

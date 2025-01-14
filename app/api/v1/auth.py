@@ -20,14 +20,15 @@ def register_user(
 ):
     user_data = {
         "sub": current_user.id,
-        "connect_wallet": current_user.connect_wallet,
+        "privy_wallet_id": current_user.privy_wallet_id,
+        "wallet_id": current_user.wallet_id,
         "wallet_provider": current_user.wallet_provider,
     }
     user = auto_add_or_update_user(db, user_data)
     return user
 
 
-@router.put("/settings", response_model=UserSettingsSchema)
+@router.patch("/settings", response_model=UserSettingsSchema)
 def update_settings(
     settings_in: UserSettingsSchema,
     db: Session = Depends(get_db),
