@@ -6,13 +6,15 @@ from app.db.models import User, UserSettings
 def auto_add_or_update_user(db: Session, user_data: dict) -> User:
     user = db.query(User).filter(User.id == user_data["sub"]).first()
     if user:
-        user.connect_wallet = user_data.get("connect_wallet", user.connect_wallet)
+        user.privy_wallet_id = user_data.get("privy_wallet_id", user.privy_wallet_id)
+        user.wallet_id = user_data.get("wallet_id", user.wallet_id)
         user.wallet_provider = user_data.get("wallet_provider", user.wallet_provider)
     else:
         user = User(
             id=user_data["sub"],
-            connect_wallet=user_data.get("connect_wallet"),
-            wallet_provider=user_data.get("wallet_provider"),
+            privy_wallet_id=user_data.get("privy_wallet_id") or "",
+            wallet_id=user_data.get("wallet_id") or "",
+            wallet_provider=user_data.get("wallet_provider") or "",
         )
         db.add(user)
     db.commit()

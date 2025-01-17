@@ -1,13 +1,14 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
-    email: EmailStr
+    pass
 
 
 class UserOut(UserBase):
     id: int
-    connect_wallet: str | None
+    privy_wallet_id: str | None
+    wallet_id: str | None
     wallet_provider: str | None
 
     class Config:
@@ -22,3 +23,9 @@ class UserSettings(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class UserCreate(BaseModel):
+    privy_wallet_id: str
+    wallet_id: str
+    wallet_provider: str

@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_user, get_db
-from app.db.models import User  # Import the User model
-from app.schemas.user import UserOut
+from app.api.deps import get_db
+from app.core.security import verify_privy_jwt
+from app.schemas.user import UserCreate, UserOut
 from app.schemas.user import UserSettings as UserSettingsSchema
 from app.services.auth_service import (
     auto_add_or_update_user,
@@ -16,13 +16,17 @@ router = APIRouter()
 
 @router.post("/register", response_model=UserOut)
 def register_user(
-    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+    user_in: UserCreate = Body(...),
+    db: Session = Depends(get_db),
+    authorization: str = Header(...),
 ):
+    token = authorization.split(" ")[1]
+    payload = verify_privy_jwt(token)
     user_data = {
-        "sub": current_user.id,
-        "privy_wallet_id": current_user.privy_wallet_id,
-        "wallet_id": current_user.wallet_id,
-        "wallet_provider": current_user.wallet_provider,
+        "sub": payload["sub"],
+        "privy_wallet_id": payload.get("privy_wallet_id"),
+        "wallet_id": payload.get("wallet_id"),
+        "wallet_provider": payload.get("wallet_provider"),
     }
     user = auto_add_or_update_user(db, user_data)
     return user
@@ -30,19 +34,24 @@ def register_user(
 
 @router.patch("/settings", response_model=UserSettingsSchema)
 def update_settings(
-    settings_in: UserSettingsSchema,
+    settings_in: UserSettingsSchema = Body(...),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    authorization: str = Header(...),
 ):
-    settings = update_user_settings(db, current_user.id, settings_in.dict())
+    token = authorization.split(" ")[1]
+    payload = verify_privy_jwt(token)
+    settings = update_user_settings(db, payload["sub"], settings_in.dict())
     return settings
 
 
 @router.get("/settings", response_model=UserSettingsSchema)
 def get_settings(
-    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+    db: Session = Depends(get_db),
+    authorization: str = Header(...),
 ):
-    settings = get_user_settings(db, current_user.id)
+    token = authorization.split(" ")[1]
+    payload = verify_privy_jwt(token)
+    settings = get_user_settings(db, payload["sub"])
     if not settings:
         raise HTTPException(status_code=404, detail="Settings not found")
     return settings

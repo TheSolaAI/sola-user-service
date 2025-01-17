@@ -13,8 +13,8 @@ pydantic = {extras = ["email"], version = "*"}
 sentry-sdk = {extras = ["fastapi"], version = "*"}
 sqlalchemy = "*"
 alembic = "*"
-fastapi = "*"
 sqlmodel = "*"
+fastapi = {extras = ["standard"], version = "*"}
 
 [dev-packages]
 
