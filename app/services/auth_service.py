@@ -1,4 +1,3 @@
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.db.models import User, UserSettings
@@ -17,16 +16,16 @@ def auto_add_or_update_user(db: Session, user_data: dict) -> User:
             wallet_id=user_data.get("wallet_id") or "",
             wallet_provider=user_data.get("wallet_provider") or "",
         )
+        settings = UserSettings(user_id=user.id)
         db.add(user)
+        db.add(settings)
     db.commit()
     db.refresh(user)
     return user
 
 
 def update_user_settings(db: Session, user_id: str, settings: dict) -> UserSettings:
-    user_settings = db.execute(
-        select(UserSettings).filter_by(user_id=user_id)
-    ).scalar_one_or_none()
+    user_settings = db.query(UserSettings).filter_by(user_id=user_id).first()
     if user_settings:
         user_settings.theme = settings.get("theme", user_settings.theme)
         user_settings.voice_preference = settings.get(
@@ -49,9 +48,7 @@ def update_user_settings(db: Session, user_id: str, settings: dict) -> UserSetti
 
 
 def get_user_settings(db: Session, user_id: str) -> UserSettings:
-    user_settings = db.execute(
-        select(UserSettings).filter_by(user_id=user_id)
-    ).scalar_one_or_none()
+    user_settings = db.query(UserSettings).filter_by(user_id=user_id).first()
     if user_settings is None:
         raise ValueError("User settings not found")
     return user_settings
