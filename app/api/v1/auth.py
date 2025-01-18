@@ -17,6 +17,17 @@ router = APIRouter()
 api_key_header = APIKeyHeader(name="Authorization")
 
 
+@router.get("/user", response_model=UserOut)
+def get_user(
+    db: Session = Depends(get_db),
+    authorization: str = Security(api_key_header),
+):
+    token = authorization.split(" ")[1]
+    payload = verify_privy_jwt(token)
+    user = auto_add_or_update_user(db, payload)
+    return user
+
+
 @router.post("/register", response_model=UserOut)
 def register_user(
     user_in: UserCreate = Body(...),
