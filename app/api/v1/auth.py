@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Body, Depends, Header, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException, Security
+from fastapi.security import APIKeyHeader
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
@@ -13,12 +14,14 @@ from app.services.auth_service import (
 
 router = APIRouter()
 
+api_key_header = APIKeyHeader(name="Authorization")
+
 
 @router.post("/register", response_model=UserOut)
 def register_user(
     user_in: UserCreate = Body(...),
     db: Session = Depends(get_db),
-    authorization: str = Header(...),
+    authorization: str = Security(api_key_header),
 ):
     token = authorization.split(" ")[1]
     payload = verify_privy_jwt(token)
@@ -36,22 +39,22 @@ def register_user(
 def update_settings(
     settings_in: UserSettingsSchema = Body(...),
     db: Session = Depends(get_db),
-    authorization: str = Header(...),
+    authorization: str = Security(api_key_header),
 ):
     token = authorization.split(" ")[1]
     payload = verify_privy_jwt(token)
-    settings = update_user_settings(db, payload["sub"], settings_in.dict())
+    settings = update_user_settings(db, str(payload["sub"]), settings_in.dict())
     return settings
 
 
 @router.get("/settings", response_model=UserSettingsSchema)
 def get_settings(
     db: Session = Depends(get_db),
-    authorization: str = Header(...),
+    authorization: str = Security(api_key_header),
 ):
     token = authorization.split(" ")[1]
     payload = verify_privy_jwt(token)
-    settings = get_user_settings(db, payload["sub"])
+    settings = get_user_settings(db, str(payload["sub"]))
     if not settings:
         raise HTTPException(status_code=404, detail="Settings not found")
     return settings

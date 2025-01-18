@@ -10,7 +10,12 @@ load_dotenv()
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Sola Auth Service"
     VERSION: str = "1.0.0"
-    BACKEND_CORS_ORIGINS: list[AnyHttpUrl] = []
+    BACKEND_CORS_ORIGINS: list[AnyHttpUrl] = [
+        AnyHttpUrl("http://localhost"),
+        AnyHttpUrl("http://localhost:8000"),
+        AnyHttpUrl("http://localhost:3000"),
+        AnyHttpUrl("https://beta.solaai.xyz"),
+    ]
     ALLOWED_HOSTS: list[str] = ["*"]
     SQLALCHEMY_DATABASE_URL: str | None = os.getenv("SQLALCHEMY_DATABASE_URL")
     PRIVY_APP_ID: str | None = os.getenv("PRIVY_APP_ID")

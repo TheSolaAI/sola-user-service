@@ -6,7 +6,7 @@ class UserBase(BaseModel):
 
 
 class UserOut(UserBase):
-    id: int
+    id: str
     privy_wallet_id: str | None
     wallet_id: str | None
     wallet_provider: str | None
@@ -16,7 +16,7 @@ class UserOut(UserBase):
 
 
 class UserSettings(BaseModel):
-    user_id: int
+    user_id: str
     theme: str = "system"
     voice_preference: str = "voice1"
     emotion_choices: str = ""

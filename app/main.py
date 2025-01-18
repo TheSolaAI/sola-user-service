@@ -53,7 +53,6 @@ app.add_middleware(SlowAPIMiddleware)
 
 app.include_router(auth_router, prefix="/api/v1/auth")
 
-
 if settings.SQLALCHEMY_DATABASE_URL:
     migrate = Migrate(app, SQLModel, settings.SQLALCHEMY_DATABASE_URL)
 else:

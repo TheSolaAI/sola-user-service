@@ -15,6 +15,7 @@ sqlalchemy = "*"
 alembic = "*"
 sqlmodel = "*"
 fastapi = {extras = ["standard"], version = "*"}
+cryptography = "*"
 
 [dev-packages]
 

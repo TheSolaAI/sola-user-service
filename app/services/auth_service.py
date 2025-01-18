@@ -22,7 +22,7 @@ def auto_add_or_update_user(db: Session, user_data: dict) -> User:
     return user
 
 
-def update_user_settings(db: Session, user_id: int, settings: dict) -> UserSettings:
+def update_user_settings(db: Session, user_id: str, settings: dict) -> UserSettings:
     user_settings = (
         db.query(UserSettings).filter(UserSettings.user_id == user_id).first()
     )
@@ -47,7 +47,7 @@ def update_user_settings(db: Session, user_id: int, settings: dict) -> UserSetti
     return user_settings
 
 
-def get_user_settings(db: Session, user_id: int) -> UserSettings:
+def get_user_settings(db: Session, user_id: str) -> UserSettings:
     user_settings = (
         db.query(UserSettings).filter(UserSettings.user_id == user_id).first()
     )
