@@ -14,6 +14,7 @@ class Settings(BaseSettings):
         AnyHttpUrl("http://localhost"),
         AnyHttpUrl("http://localhost:8000"),
         AnyHttpUrl("http://localhost:3000"),
+        AnyHttpUrl("http://localhost:5173"),
         AnyHttpUrl("https://beta.solaai.xyz"),
     ]
     ALLOWED_HOSTS: list[str] = ["*"]

@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import jwt
 from fastapi import HTTPException
 from jwt import PyJWKClient
@@ -17,6 +19,7 @@ def verify_privy_jwt(token: str):
             algorithms=["ES256"],
             audience=settings.PRIVY_APP_ID,
             issuer="privy.io",
+            leeway=timedelta(hours=30),
         )
         return payload
     except jwt.ExpiredSignatureError:

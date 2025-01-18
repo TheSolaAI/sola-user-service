@@ -16,7 +16,6 @@ class UserOut(UserBase):
 
 
 class UserSettings(BaseModel):
-    user_id: str
     theme: str = "system"
     voice_preference: str = "voice1"
     emotion_choices: str = ""

@@ -27,9 +27,9 @@ def register_user(
     payload = verify_privy_jwt(token)
     user_data = {
         "sub": payload["sub"],
-        "privy_wallet_id": payload.get("privy_wallet_id"),
-        "wallet_id": payload.get("wallet_id"),
-        "wallet_provider": payload.get("wallet_provider"),
+        "privy_wallet_id": user_in.privy_wallet_id,
+        "wallet_id": user_in.wallet_id,
+        "wallet_provider": user_in.wallet_provider,
     }
     user = auto_add_or_update_user(db, user_data)
     return user
