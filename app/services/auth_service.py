@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.db.models import User, UserSettings
@@ -50,5 +51,5 @@ def update_user_settings(db: Session, user_id: str, settings: dict) -> UserSetti
 def get_user_settings(db: Session, user_id: str) -> UserSettings:
     user_settings = db.query(UserSettings).filter_by(user_id=user_id).first()
     if user_settings is None:
-        raise ValueError("User settings not found")
+        raise HTTPException(status_code=404, detail="User settings not found")
     return user_settings
