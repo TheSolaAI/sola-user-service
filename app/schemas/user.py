@@ -7,24 +7,24 @@ class UserBase(BaseModel):
 
 class UserOut(UserBase):
     id: str
-    privy_wallet_id: str | None
-    wallet_id: str | None
-    wallet_provider: str | None
+    privy_wallet_id: str | None = None
+    wallet_id: str | None = None
+    wallet_provider: str | None = None
 
     class Config:
         from_attributes = True
 
 
 class UserSettings(BaseModel):
-    theme: str = "system"
-    voice_preference: str = "voice1"
-    emotion_choices: str = ""
+    theme: str | None = None
+    voice_preference: str | None = None
+    emotion_choices: str | None = None
 
     class Config:
         from_attributes = True
 
 
 class UserCreate(BaseModel):
-    privy_wallet_id: str
-    wallet_id: str
-    wallet_provider: str
+    privy_wallet_id: str | None = None
+    wallet_id: str | None = None
+    wallet_provider: str | None = None

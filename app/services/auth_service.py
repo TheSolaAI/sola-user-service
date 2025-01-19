@@ -13,9 +13,9 @@ def auto_add_or_update_user(db: Session, user_data: dict) -> User:
     else:
         user = User(
             id=user_data["sub"],
-            privy_wallet_id=user_data.get("privy_wallet_id") or "",
-            wallet_id=user_data.get("wallet_id") or "",
-            wallet_provider=user_data.get("wallet_provider") or "",
+            privy_wallet_id=user_data.get("privy_wallet_id") or None,
+            wallet_id=user_data.get("wallet_id") or None,
+            wallet_provider=user_data.get("wallet_provider") or None,
         )
         settings = UserSettings(user_id=user.id)
         db.add(user)
@@ -28,13 +28,12 @@ def auto_add_or_update_user(db: Session, user_data: dict) -> User:
 def update_user_settings(db: Session, user_id: str, settings: dict) -> UserSettings:
     user_settings = db.query(UserSettings).filter_by(user_id=user_id).first()
     if user_settings:
-        user_settings.theme = settings.get("theme", user_settings.theme)
-        user_settings.voice_preference = settings.get(
-            "voice_preference", user_settings.voice_preference
-        )
-        user_settings.emotion_choices = settings.get(
-            "emotion_choices", user_settings.emotion_choices
-        )
+        if settings.get("theme") is not None:
+            user_settings.theme = settings["theme"]
+        if settings.get("voice_preference") is not None:
+            user_settings.voice_preference = settings["voice_preference"]
+        if settings.get("emotion_choices") is not None:
+            user_settings.emotion_choices = settings["emotion_choices"]
     else:
         user_settings = UserSettings(
             user_id=user_id,
