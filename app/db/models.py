@@ -5,8 +5,10 @@ class UserSettings(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     user_id: str = Field(foreign_key="user.id")
     theme: str | None = Field(default="system")
-    voice_preference: str | None = Field(default="voice1")
-    emotion_choices: str | None = Field(default="")
+    voice_preference: str | None = Field(default="ash")
+    emotion_choices: str | None = Field(
+        default="highly energetic and cheerfully enthusiastic"
+    )
     user: "User" = Relationship(back_populates="settings")
 
 
