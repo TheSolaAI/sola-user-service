@@ -1,9 +1,8 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 
 from app.db.models import User, UserSettings
-
 
 
 def auto_add_or_update_user(db: Session, user_data: dict) -> User:
@@ -14,7 +13,6 @@ def auto_add_or_update_user(db: Session, user_data: dict) -> User:
         user.wallet_provider = user_data.get("wallet_provider", user.wallet_provider)
     else:
         try:
-            # Start a nested transaction
             with db.begin_nested():
                 user = User(
                     id=user_data["sub"],
@@ -25,21 +23,20 @@ def auto_add_or_update_user(db: Session, user_data: dict) -> User:
                 settings = UserSettings(user_id=user.id)
                 db.add(user)
                 db.add(settings)
-                
-            # Commit the outer transaction
+
             db.commit()
-            
-            # Verify persistence and refresh
+
             persisted_user = db.query(User).filter(User.id == user_data["sub"]).first()
             if not persisted_user:
                 raise HTTPException(status_code=500, detail="Failed to create user")
             return persisted_user
-            
+
         except SQLAlchemyError as e:
             db.rollback()
             raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
-            
+
     return user
+
 
 def update_user_settings(db: Session, user_id: str, settings: dict) -> UserSettings:
     user_settings = db.query(UserSettings).filter_by(user_id=user_id).first()
