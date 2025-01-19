@@ -1,19 +1,22 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import OperationalError
+from time import sleep
 from sqlalchemy.orm import Session
 
 from app.db.models import User, UserSettings
 
-
-def auto_add_or_update_user(db: Session, user_data: dict) -> User:
-    user = db.query(User).filter(User.id == user_data["sub"]).first()
-    if user:
-        user.privy_wallet_id = user_data.get("privy_wallet_id", user.privy_wallet_id)
-        user.wallet_id = user_data.get("wallet_id", user.wallet_id)
-        user.wallet_provider = user_data.get("wallet_provider", user.wallet_provider)
-    else:
+    max_retries = 3
+    retry_delay = 1  # Initial delay in seconds
+    
+    for attempt in range(max_retries):
         try:
-            with db.begin_nested():
+            user = db.query(User).filter(User.id == user_data["sub"]).first()
+            if user:
+                user.privy_wallet_id = user_data.get("privy_wallet_id", user.privy_wallet_id)
+                user.wallet_id = user_data.get("wallet_id", user.wallet_id)
+                user.wallet_provider = user_data.get("wallet_provider", user.wallet_provider)
+            else:
                 user = User(
                     id=user_data["sub"],
                     privy_wallet_id=user_data.get("privy_wallet_id") or None,
@@ -23,6 +26,20 @@ def auto_add_or_update_user(db: Session, user_data: dict) -> User:
                 settings = UserSettings(user_id=user.id)
                 db.add(user)
                 db.add(settings)
+            
+            db.commit()
+            db.refresh(user)
+            return user
+        except OperationalError as e:
+            db.rollback()
+            if attempt == max_retries - 1:
+                raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, 
+                                 detail="Database connection error")
+            sleep(retry_delay * (2 ** attempt))  # Exponential backoff
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+                             detail=str(e))
 
             db.commit()
 
