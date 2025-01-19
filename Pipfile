@@ -4,18 +4,25 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-slowapi = "*"
-uvicorn = "*"
-pydantic-settings = "*"
-pyjwt = "*"
-psycopg = {extras = ["pool", "binary"], version = "*"}
-pydantic = {extras = ["email"], version = "*"}
-sentry-sdk = {extras = ["fastapi"], version = "*"}
-sqlalchemy = "*"
-alembic = "*"
-sqlmodel = "*"
-fastapi = {extras = ["standard"], version = "*"}
-cryptography = "*"
+django = "==5.1.*"
+gunicorn = "*"
+django-rest-framework = "*"
+django-environ = "*"
+django-debug-toolbar = "*"
+django-filter = "*"
+drf-spectacular = "*"
+django-cors-headers = "*"
+drf-standardized-errors = {extras = ["openapi"], version = "*"}
+psycopg = {extras = ["binary", "pool"], version = "*"}
+pillow = "*"
+django-storages = {extras = ["s3"] }
+python-magic = "*"
+django-health-check = "*"
+sentry-sdk = {extras = ["django"], version = "*"}
+drf-nested-routers = "*"
+fcm-django = "*"
+django-cleanup = "*"
+django-dbbackup = "*"
 
 [dev-packages]
 

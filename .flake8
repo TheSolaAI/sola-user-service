@@ -1,0 +1,12 @@
+[flake8]
+max-line-length = 88
+exclude =
+    .gitignore,
+    __pycache__,
+    venv,
+    .pyc,
+    .pytest_cache,
+    .vscode,
+    .git,
+    .*/migrations/.*
+    /dynamic_rest/
