@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.db.models import User, UserSettings
@@ -11,17 +12,29 @@ def auto_add_or_update_user(db: Session, user_data: dict) -> User:
         user.wallet_id = user_data.get("wallet_id", user.wallet_id)
         user.wallet_provider = user_data.get("wallet_provider", user.wallet_provider)
     else:
-        user = User(
-            id=user_data["sub"],
-            privy_wallet_id=user_data.get("privy_wallet_id") or None,
-            wallet_id=user_data.get("wallet_id") or None,
-            wallet_provider=user_data.get("wallet_provider") or None,
-        )
-        settings = UserSettings(user_id=user.id)
-        db.add(user)
-        db.add(settings)
-    db.commit()
-    db.refresh(user)
+        try:
+            with db.begin_nested():
+                user = User(
+                    id=user_data["sub"],
+                    privy_wallet_id=user_data.get("privy_wallet_id") or None,
+                    wallet_id=user_data.get("wallet_id") or None,
+                    wallet_provider=user_data.get("wallet_provider") or None,
+                )
+                settings = UserSettings(user_id=user.id)
+                db.add(user)
+                db.add(settings)
+
+            db.commit()
+
+            persisted_user = db.query(User).filter(User.id == user_data["sub"]).first()
+            if not persisted_user:
+                raise HTTPException(status_code=500, detail="Failed to create user")
+            return persisted_user
+
+        except SQLAlchemyError as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
     return user
 
 

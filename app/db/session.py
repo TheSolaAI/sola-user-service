@@ -6,4 +6,7 @@ if not settings.SQLALCHEMY_DATABASE_URL:
     raise ValueError("SQLALCHEMY_DATABASE_URL is not set")
 
 engine = create_engine(settings.SQLALCHEMY_DATABASE_URL)
-SessionLocal = Session(engine)
+
+
+def SessionLocal():
+    return Session(engine)
