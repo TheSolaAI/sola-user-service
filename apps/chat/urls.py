@@ -5,9 +5,9 @@ from rest_framework_nested.routers import NestedDefaultRouter
 from .views import ChatMessageViewSet, ChatRoomViewSet
 
 router = DefaultRouter()
-router.register("chatrooms", ChatRoomViewSet, basename="chatroom")
+router.register("v1/chatrooms", ChatRoomViewSet, basename="chatroom")
 
-chatrooms_router = NestedDefaultRouter(router, "chatrooms", lookup="room")
+chatrooms_router = NestedDefaultRouter(router, "v1/chatrooms", lookup="room")
 chatrooms_router.register("messages", ChatMessageViewSet, basename="chatroom-messages")
 
 urlpatterns = [
