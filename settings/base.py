@@ -8,6 +8,7 @@ from .services.installed_apps import (
     MY_APPS,
     THIRD_PARTY_APPS,
 )
+from .services.privy import *  # noqa: F403
 from .services.storages import *  # noqa: F403
 
 INSTALLED_APPS = DJANGO_INBUILT_APPS + THIRD_PARTY_APPS + HEALTH_CHECK_APPS + MY_APPS
@@ -21,11 +22,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)

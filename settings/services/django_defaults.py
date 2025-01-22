@@ -41,9 +41,9 @@ settings = env("DJANGO_SETTINGS_MODULE")
 
 ALLOWED_HOSTS = ["*"]
 
-CORS_ALLOWED_ORIGINS = ["*"]
+CORS_ALLOW_ALL_ORIGINS = True
 
-CSRF_TRUSTED_ORIGINS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://*", "http://*"]
 
 INTERNAL_IPS = ["127.0.0.1"]
 
@@ -69,13 +69,13 @@ CSRF_USE_SESSIONS = False
 
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 
-ROOT_URLCONF = "tdfa.urls"
+ROOT_URLCONF = "sola.urls"
 
 SITE_ID = 1
 
-WSGI_APPLICATION = "tdfa.wsgi.application"
+WSGI_APPLICATION = "sola.wsgi.application"
 
-ASGI_APPLICATION = "tdfa.asgi.application"
+ASGI_APPLICATION = "sola.asgi.application"
 
 LANGUAGE_CODE = "en-us"
 

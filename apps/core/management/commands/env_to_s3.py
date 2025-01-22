@@ -14,7 +14,7 @@ class Command(BaseCommand):
             {"local": ".env", "s3_folder": "local/"},
         ]
 
-        s3_bucket_name = "tdfa-django-secrets"
+        s3_bucket_name = "sola-secrets"
 
         s3_client = boto3.client(
             "s3",

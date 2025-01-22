@@ -4,7 +4,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_standardized_errors.openapi.AutoSchema",
     "EXCEPTION_HANDLER": "drf_standardized_errors.handler.exception_handler",
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "apps.authw.authentication.PrivyAuthentication",
     ),
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_THROTTLE_CLASSES": [
@@ -13,7 +13,7 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.ScopedRateThrottle",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.AllowAny",
     ],
     "DEFAULT_THROTTLE_RATES": {
         "anon": "360/hour",
@@ -31,13 +31,9 @@ SIMPLE_JWT = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "TDFA API",
-    "DESCRIPTION": "API for TDFA",
+    "TITLE": "Sola API",
+    "DESCRIPTION": "API for Sola AI",
     "VERSION": "0.1.0",
-    "EXTERNAL_DOCS": {
-        "url": "https://docs.allauth.org/en/latest/headless/openapi-specification/",
-        "description": "Allauth Headless API Docs. Use this for authentication",
-    },
     "SERVE_INCLUDE_SCHEMA": False,
     "ENUM_NAME_OVERRIDES": {
         "ValidationErrorEnum": "drf_standardized_errors.openapi_serializers.ValidationErrorEnum.choices",

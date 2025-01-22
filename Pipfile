@@ -8,7 +8,7 @@ django = "==5.1.*"
 gunicorn = "*"
 django-rest-framework = "*"
 django-environ = "*"
-django-debug-toolbar = "*"
+
 django-filter = "*"
 drf-spectacular = "*"
 django-cors-headers = "*"
@@ -23,6 +23,9 @@ drf-nested-routers = "*"
 fcm-django = "*"
 django-cleanup = "*"
 django-dbbackup = "*"
+djangorestframework-simplejwt = {extras = ["crypto"], version = "*"}
+pyjwt = "*"
+cryptography = "*"
 
 [dev-packages]
 

@@ -24,8 +24,9 @@ HEALTH_CHECK_APPS = [
 ]
 
 MY_APPS = [
-    # "apps.core",
+    "apps.core",
     "apps.authw",
+    "apps.chat",
 ]
 
 DJANGO_CLEANUP = ["django_cleanup.apps.CleanupConfig"]

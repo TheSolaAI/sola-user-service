@@ -64,6 +64,6 @@ DBBACKUP_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 DBBACKUP_STORAGE_OPTIONS = {
     "access_key": AWS_ACCESS_KEY_ID,
     "secret_key": AWS_SECRET_ACCESS_KEY,
-    "bucket_name": "tdfa-dev-db-backup",
+    "bucket_name": "sola-dev-db-backup",
     "default_acl": "private",
 }
