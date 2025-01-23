@@ -3,7 +3,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import mixins, permissions, response, status, viewsets
 
 from apps.authw.models import User
-from apps.authw.serializers import UserRegisterSerializer
+from apps.authw.serializers import UserRegisterSerializer, UserSettingsSerializer
 
 
 class UserRegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -19,11 +19,17 @@ class UserListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         user = self.request.user
         return User.objects.filter(user=user)
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        serializer = self.get_serializer(queryset.first())
+        return response.Response(serializer.data)
+
 
 class UserSettingsViewSet(
     mixins.ListModelMixin, viewsets.GenericViewSet, mixins.UpdateModelMixin
 ):
-    serializer_class = UserRegisterSerializer
+    serializer_class = UserSettingsSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self) -> QuerySet:
@@ -35,3 +41,10 @@ class UserSettingsViewSet(
         if request.method == "PUT":
             return response.Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
         return super().update(request, *args, **kwargs)
+
+    @extend_schema(responses=UserSettingsSerializer)
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        serializer = self.get_serializer(queryset.first())
+        return response.Response(serializer.data)
