@@ -21,7 +21,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context["request"].user
         user, created = User.objects.update_or_create(
-            user=user, defaults=validated_data
+            id=user.id, defaults=validated_data
         )
         return user
 
