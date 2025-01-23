@@ -10,11 +10,9 @@ router.register("auth/settings", UserSettingsViewSet, basename="settings")
 
 urlpatterns = [
     path(
-        "v1/auth/settings/",
+        "v1/auth/settings/update/",
         UserSettingsViewSet.as_view({"patch": "custom_partial_update"}),
         name="user-settings-partial-update",
     ),
     path("v1/", include(router.urls)),
 ]
-
-# urlpatterns = format_suffix_patterns(urlpatterns)
