@@ -78,5 +78,6 @@ jobs:
             docker stop sola-auth-service || true
             docker rm sola-auth-service || true
 
+            docker system prune -af
             docker run -d --name sola-auth-service -p 8000:8000 ewr.vultrcr.com/develop1/sola-auth-service:latest
           EOF
