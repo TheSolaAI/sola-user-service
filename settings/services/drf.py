@@ -60,7 +60,7 @@ SPECTACULAR_SETTINGS = {
         "jsonEditor": True,
         "persistAuthorization": True,
     },
-    "SCHEMA_PATH_PREFIX": "/api",
+    "SCHEMA_PATH_PREFIX": "/api/v1",
     "COMPONENT_SPLIT_REQUEST": True,
 }
 
