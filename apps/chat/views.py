@@ -1,4 +1,4 @@
-from rest_framework import mixins, pagination, permissions, viewsets
+from rest_framework import exceptions, mixins, pagination, permissions, viewsets
 
 from apps.chat.models import ChatMessage, ChatRoom
 from apps.chat.serializers import ChatMessageSerializer, ChatRoomSerializer
@@ -25,6 +25,10 @@ class ChatMessageViewSet(
     pagination_class = pagination.LimitOffsetPagination
 
     def get_queryset(self):
+        if ChatRoom.objects.filter(
+            id=self.kwargs["room_pk"], user=self.request.user
+        ).exists():
+            raise exceptions.NotFound(detail="Room not found")
         return ChatMessage.objects.filter(room__id=self.kwargs["room_pk"]).order_by(
             "-id"
         )
