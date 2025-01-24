@@ -25,7 +25,7 @@ class ChatMessageViewSet(
     pagination_class = pagination.LimitOffsetPagination
 
     def get_queryset(self):
-        if ChatRoom.objects.filter(
+        if not ChatRoom.objects.filter(
             id=self.kwargs["room_pk"], user=self.request.user
         ).exists():
             raise exceptions.NotFound(detail="Room not found")
