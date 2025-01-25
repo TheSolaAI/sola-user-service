@@ -11,7 +11,7 @@ class User(AbstractUser):
             "unique": "A user with that username already exists.",
         },
     )
-    email = None
+    email = models.EmailField(default=None, null=True, blank=True)
     privy_wallet_address = models.CharField(max_length=50, null=True, default=None)
     wallet_address = models.CharField(
         max_length=50, blank=True, null=True, default=None
@@ -19,6 +19,7 @@ class User(AbstractUser):
     wallet_provider = models.CharField(
         max_length=50, blank=True, null=True, default=None
     )
+    REQUIRED_FIELDS = []
 
 
 class UserSettings(models.Model):
