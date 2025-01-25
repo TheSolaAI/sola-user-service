@@ -1,10 +1,13 @@
 from django.db.models import Max
+from drf_spectacular.utils import extend_schema
 from rest_framework import (
     exceptions,
     filters,
     mixins,
     pagination,
     permissions,
+    response,
+    status,
     viewsets,
 )
 
@@ -13,7 +16,11 @@ from apps.chat.serializers import ChatMessageSerializer, ChatRoomSerializer
 
 
 class ChatRoomViewSet(
-    mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
 ):
     serializer_class = ChatRoomSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -27,6 +34,12 @@ class ChatRoomViewSet(
             .order_by("-last_message_created_at")
             .distinct()
         )
+
+    @extend_schema(exclude=True)
+    def update(self, request, *args, **kwargs):
+        if request.method == "PUT":
+            return response.Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return super().update(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
