@@ -15,6 +15,7 @@ class ChatRoomViewSet(
             ChatRoom.objects.prefetch_related("messages")
             .filter(user=self.request.user)
             .order_by("-messages__id")
+            .distinct()
         )
 
     def perform_create(self, serializer):
