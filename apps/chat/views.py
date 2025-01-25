@@ -32,3 +32,6 @@ class ChatMessageViewSet(
         return ChatMessage.objects.filter(room__id=self.kwargs["room_pk"]).order_by(
             "-id"
         )
+
+    def perform_create(self, serializer) -> None:
+        return serializer.save(room_id=self.kwargs["room_pk"])
