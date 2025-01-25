@@ -1,3 +1,4 @@
+from django.db.models import Max
 from rest_framework import (
     exceptions,
     filters,
@@ -22,6 +23,8 @@ class ChatRoomViewSet(
         return (
             ChatRoom.objects.prefetch_related("messages")
             .filter(user=self.request.user)
+            .annotate(last_message_created_at=Max("messages__created_at"))
+            .order_by("-last_message_created_at")
             .distinct()
         )
 
