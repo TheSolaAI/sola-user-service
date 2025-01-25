@@ -1,4 +1,11 @@
-from rest_framework import exceptions, mixins, pagination, permissions, viewsets
+from rest_framework import (
+    exceptions,
+    filters,
+    mixins,
+    pagination,
+    permissions,
+    viewsets,
+)
 
 from apps.chat.models import ChatMessage, ChatRoom
 from apps.chat.serializers import ChatMessageSerializer, ChatRoomSerializer
@@ -9,12 +16,12 @@ class ChatRoomViewSet(
 ):
     serializer_class = ChatRoomSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.OrderingFilter]
 
     def get_queryset(self):
         return (
             ChatRoom.objects.prefetch_related("messages")
             .filter(user=self.request.user)
-            .order_by("-messages__id")
             .distinct()
         )
 

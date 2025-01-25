@@ -7,3 +7,4 @@ class AuthwConfig(AppConfig):
 
     def ready(self):
         import apps.authw.signals  # noqa
+        import apps.authw.extension  # noqa
