@@ -11,7 +11,11 @@ class ChatRoomViewSet(
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return ChatRoom.objects.filter(user=self.request.user)
+        return (
+            ChatRoom.objects.prefetch_related("messages")
+            .filter(user=self.request.user)
+            .order_by("-messages__id")
+        )
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
