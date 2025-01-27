@@ -31,7 +31,7 @@ SIMPLE_JWT = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Sola API",
+    "TITLE": "Sola API v1",
     "DESCRIPTION": "API for Sola AI",
     "VERSION": "0.1.0",
     "SERVE_INCLUDE_SCHEMA": False,
