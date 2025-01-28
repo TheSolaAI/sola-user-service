@@ -12,6 +12,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("apps.authw.urls")),
     path("api/", include("apps.chat.urls")),
+    path("", include("apps.core.urls")),
 ]
 
 urlpatterns += [
