@@ -17,7 +17,7 @@ class UserListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     def get_queryset(self) -> QuerySet:
         user = self.request.user
-        return User.objects.filter(user=user)
+        return User.objects.filter(id=user.id)  # type: ignore
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
