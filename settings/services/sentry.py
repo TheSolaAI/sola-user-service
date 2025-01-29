@@ -7,12 +7,6 @@ sentry_sdk.init(
     dsn=env("SENTRY_DSN"),  # noqa
     integrations=[
         DjangoIntegration(),
-        # CeleryIntegration(
-        #     monitor_beat_tasks=True,
-        # ),
-        # AioHttpIntegration(),
-        # RedisIntegration(),
-        # LoggingIntegration(),
     ],
     send_default_pii=True,
     traces_sample_rate=1.0,

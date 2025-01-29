@@ -1,6 +1,6 @@
 from .base import *  # noqa
 from .services.aws import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY  # noqa
-# from .services.sentry import *  # noqa: F403
+from .services.sentry import *  # noqa: F403
 
 # INSTALLED_APPS += [  # noqa
 #     "debug_toolbar",
