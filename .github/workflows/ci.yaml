@@ -14,6 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup k8s
+        uses: azure/setup-kubectl@v4
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -52,32 +55,11 @@ jobs:
                               --push .
           echo "image=ewr.vultrcr.com/develop1/sola-auth-service:latest" >> $GITHUB_OUTPUT
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup SSH Key
+      - name: Export KUBECONFIG environment variable
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.VULTR_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.VULTR_INSTANCE_IP }} >> ~/.ssh/known_hosts
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+          export KUBECONFIG=$HOME/.kube/config
 
-      - name: SSH into Vultr Docker Instance and Deploy
+      - name: Restart Kubernetes Deployment (Rolling Update)
         run: |
-          sshpass -p '${{ secrets.VULTR_INSTANCE_PASSWORD }}' ssh -o StrictHostKeyChecking=no root@${{ secrets.VULTR_INSTANCE_IP }} << 'EOF'
-            docker login https://ewr.vultrcr.com/develop1 -u ${{ secrets.VULTR_REGISTRY_USER }} -p ${{ secrets.VULTR_REGISTRY_PASSWORD }}
-
-            docker system prune -af
-            docker pull ewr.vultrcr.com/develop1/sola-auth-service:latest
-
-            docker stop sola-auth-service || true
-            docker rm sola-auth-service || true
-
-            docker run -d --name sola-auth-service -p 8000:8000 ewr.vultrcr.com/develop1/sola-auth-service:latest
-            docker system prune -af
-          EOF
+          kubectl rollout restart deployment sola-auth-service -n sola-user-service
