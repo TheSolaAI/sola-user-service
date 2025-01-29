@@ -62,4 +62,4 @@ jobs:
 
       - name: Restart Kubernetes Deployment (Rolling Update)
         run: |
-          kubectl rollout restart deployment sola-auth-service -n sola-user-service
+          kubectl rollout restart deployment sola-user-service -n sola-user-service
