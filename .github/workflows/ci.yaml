@@ -59,4 +59,4 @@ jobs:
         run: |
           echo "${{ secrets.KUBECONFIG }}" > solaconfig.yaml
           export KUBECONFIG=solaconfig.yaml
-          kubectl rollout restart deployment sola-user-service -n sola-user-service
+          kubectl rollout restart deployment sola-user-service-deployment -n sola-user-service
