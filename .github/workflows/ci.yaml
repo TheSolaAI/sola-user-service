@@ -55,11 +55,8 @@ jobs:
                               --push .
           echo "image=ewr.vultrcr.com/develop1/sola-auth-service:latest" >> $GITHUB_OUTPUT
 
-      - name: Export KUBECONFIG environment variable
-        run: |
-          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
-          export KUBECONFIG=$HOME/.kube/config
-
       - name: Restart Kubernetes Deployment (Rolling Update)
         run: |
+          echo "${{ secrets.KUBECONFIG }}" > solaconfig.yaml
+          export KUBECONFIG=solaconfig.yaml
           kubectl rollout restart deployment sola-user-service -n sola-user-service
