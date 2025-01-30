@@ -12,14 +12,19 @@ class User(AbstractUser):
         },
     )
     email = models.EmailField(default=None, null=True, blank=True)
-    privy_wallet_address = models.CharField(max_length=50, null=True, default=None)
-    wallet_address = models.CharField(
-        max_length=50, blank=True, null=True, default=None
-    )
-    wallet_provider = models.CharField(
-        max_length=50, blank=True, null=True, default=None
-    )
     REQUIRED_FIELDS = []
+
+
+class UserWallets(models.Model):
+    WALLET_PROVIDER_CHOICES = [
+        ("privy", "Privy Wallet"),
+        ("solflare", "Solflare Wallet"),
+        ("phanthom", "Phanthom Wallet"),
+    ]
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="wallets")
+    wallet_address = models.CharField(max_length=255)
+    wallet_provider = models.CharField(max_length=50, choices=WALLET_PROVIDER_CHOICES)
 
 
 class UserSettings(models.Model):

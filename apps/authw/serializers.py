@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import User, UserSettings
+from .models import User, UserSettings, UserWallets
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -9,9 +9,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "username",
-            "privy_wallet_address",
-            "wallet_address",
-            "wallet_provider",
         ]
         read_only_fields = [
             "id",
@@ -39,4 +36,19 @@ class UserSettingsSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "id",
             "user_id",
+        ]
+
+
+class UserWalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserWallets
+        fields = [
+            "id",
+            "user",
+            "wallet_address",
+            "wallet_provider",
+        ]
+        read_only_fields = [
+            "id",
+            "user",
         ]

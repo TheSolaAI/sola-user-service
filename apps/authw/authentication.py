@@ -35,10 +35,7 @@ class PrivyAuthentication(BaseAuthentication):
                 )
             except ValueError:
                 raise AuthenticationFailed("Invalid Authorization header format")
-        cookie = request.COOKIES.get("privy-id-token")
-        if not cookie:
-            raise AuthenticationFailed(f"cookie: {request.COOKIES}")
-        return cookie
+        return request.COOKIES.get("privy-id-token")
 
     def authenticate_header(self, request) -> str:
         return "Bearer realm='{}'".format(self.www_authenticate_realm)

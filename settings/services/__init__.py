@@ -15,10 +15,10 @@ try:
 except Exception:  # nosec
     pass  # nosec
 
-if env("ENVIRONMENT") is None:
-    raise Exception("Environment variables not set.")
+# if env("ENVIRONMENT") is None:
+#     raise Exception("Environment variables not set.")
 
-if (env("ENVIRONMENT") == "production") and (
-    env("DJANGO_SETTINGS_MODULE") != "settings.prod"
-):
-    raise Exception("Invalid DJANGO_SETTINGS_MODULE for production environment.")
+# if (env("ENVIRONMENT") == "production") and (
+#     env("DJANGO_SETTINGS_MODULE") != "settings.prod"
+# ):
+#     raise Exception("Invalid DJANGO_SETTINGS_MODULE for production environment.")
