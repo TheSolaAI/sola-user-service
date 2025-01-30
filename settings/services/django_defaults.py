@@ -34,8 +34,7 @@ TEMPLATES = [
 
 SECRET_KEY = env("SECRET_KEY")
 
-DEBUG = True
-
+DEBUG = False
 
 settings = env("DJANGO_SETTINGS_MODULE")
 
