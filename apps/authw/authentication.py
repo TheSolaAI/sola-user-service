@@ -27,17 +27,17 @@ class PrivyAuthentication(BaseAuthentication):
         cookie = request.COOKIES.get("privy-id-token")
         if cookie:
             return cookie
-        # auth_header = request.headers.get("Authorization")
-        # if auth_header:
-        #     try:
-        #         prefix, token = auth_header.split(" ")
-        #         if prefix.lower() == "bearer":
-        #             return token
-        #         raise AuthenticationFailed(
-        #             "Authorization header must start with 'Bearer'"
-        #         )
-        #     except ValueError:
-        #         raise AuthenticationFailed("Invalid Authorization header format")
+        auth_header = request.headers.get("Authorization")
+        if auth_header:
+            try:
+                prefix, token = auth_header.split(" ")
+                if prefix.lower() == "bearer":
+                    return token
+                raise AuthenticationFailed(
+                    "Authorization header must start with 'Bearer'"
+                )
+            except ValueError:
+                raise AuthenticationFailed("Invalid Authorization header format")
 
     def authenticate_header(self, request) -> str:
         return "Bearer realm='{}'".format(self.www_authenticate_realm)
