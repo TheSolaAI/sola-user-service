@@ -10,6 +10,7 @@ class ChatRoomSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "session_id",
+            "agent_id",
             "user",
         ]
         read_only_fields = ["id", "user"]
