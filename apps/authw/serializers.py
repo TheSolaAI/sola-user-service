@@ -32,10 +32,14 @@ class UserSettingsSerializer(serializers.ModelSerializer):
             "theme",
             "voice_preference",
             "emotion_choice",
+            "credits_remaining",
+            "tiers",
         ]
         read_only_fields = [
             "id",
             "user_id",
+            "credits_remaining",
+            "tiers",
         ]
 
 

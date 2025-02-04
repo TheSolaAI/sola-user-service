@@ -19,7 +19,7 @@ class UserWallets(models.Model):
     WALLET_PROVIDER_CHOICES = [
         ("privy", "Privy Wallet"),
         ("solflare", "Solflare Wallet"),
-        ("phanthom", "Phanthom Wallet"),
+        ("phantom", "Phantom Wallet"),
     ]
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="wallets")
@@ -33,6 +33,11 @@ class UserSettings(models.Model):
         ("dark", "Dark"),
         ("system", "System"),
     ]
+    TIER_CHOICES = [
+        ("tier1", "Tier 1"),
+        ("tier2", "Tier 2"),
+        ("tier3", "Tier 3"),
+    ]
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="settings")
     theme = models.CharField(max_length=20, default="system", choices=THEME_CHOICES)
@@ -40,3 +45,5 @@ class UserSettings(models.Model):
     emotion_choice = models.CharField(
         max_length=255, default="highly energetic and cheerfully enthusiastic"
     )
+    credits_remaining = models.IntegerField(default=0)
+    tiers = models.CharField(max_length=10, default="tier1", choices=TIER_CHOICES)
