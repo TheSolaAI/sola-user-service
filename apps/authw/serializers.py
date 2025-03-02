@@ -30,6 +30,7 @@ class UserSettingsSerializer(serializers.ModelSerializer):
             "id",
             "user_id",
             "theme",
+            "custom_themes"
             "voice_preference",
             "emotion_choice",
             "credits_remaining",

@@ -35,6 +35,8 @@ class UserSettingsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self) -> QuerySet:
+        if getattr(self, "swagger_fake_view", False):
+            return UserSettings.objects.none()
         user = self.request.user
         return UserSettings.objects.filter(user=user)
 
