@@ -36,6 +36,8 @@ class UserSettings(models.Model):
         ("tier3", "Tier 3"),
     ]
     id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=150, default="" )
+    profile_pic = models.JSONField(default=dict) # The profile picture is construucted on the client side
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="settings")
     theme = models.CharField(max_length=20, default="system")
     voice_preference = models.CharField(max_length=25, default="ash")

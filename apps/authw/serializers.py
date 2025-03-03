@@ -29,6 +29,8 @@ class UserSettingsSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "user_id",
+            "name",
+            "profile_pic",
             "theme",
             "custom_themes",
             "voice_preference",
