@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -40,6 +42,8 @@ class UserSettings(models.Model):
     emotion_choice = models.CharField(
         max_length=255, default="highly energetic and cheerfully enthusiastic"
     )
-    credits_remaining = models.IntegerField(default=0)
+    credits_remaining = models.DecimalField(
+        default=Decimal(0.00), max_digits=10, decimal_places=4
+    )
     tiers = models.CharField(max_length=10, default="tier1", choices=TIER_CHOICES)
     custom_themes = models.JSONField(default=dict)
