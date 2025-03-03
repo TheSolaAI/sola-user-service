@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gunicorn sola.wsgi:application -w 2 --bind 0.0.0.0:8000
+gunicorn sola.wsgi:application -w 1 --bind 0.0.0.0:8000
