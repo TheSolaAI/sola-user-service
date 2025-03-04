@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from drf_spectacular.utils import extend_schema
 from rest_framework import (
     exceptions,
@@ -26,16 +28,9 @@ class ChatRoomViewSet(
     filter_backends = [filters.OrderingFilter]
 
     def get_queryset(self):
-        chat_messages = (
-            ChatMessage.objects.filter(
-                room__user=self.request.user,
-            )
-            .order_by("-created_at")
-            .first()
+        return ChatRoom.objects.filter(user=self.request.user).order_by(
+            "-message_updated_at"
         )
-        if not chat_messages:
-            return ChatRoom.objects.none()
-        return ChatRoom.objects.get(id=chat_messages.room.id)
 
     @extend_schema(exclude=True)
     def update(self, request, *args, **kwargs):
@@ -64,4 +59,7 @@ class ChatMessageViewSet(
         )
 
     def perform_create(self, serializer) -> None:
+        ChatRoom.objects.filter(id=self.kwargs["room_pk"]).update(
+            message_updated_at=datetime.now()
+        )
         return serializer.save(room_id=self.kwargs["room_pk"])
