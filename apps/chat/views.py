@@ -29,7 +29,7 @@ class ChatRoomViewSet(
     filter_backends = [filters.OrderingFilter]
 
     def get_queryset(self):
-        return ChatRoom.objects.filter(user__id=25).order_by(
+        return ChatRoom.objects.filter(user=self.request.user).order_by(
             Case(
                 When(message_updated_at__isnull=True, then=True),
                 default=False,
