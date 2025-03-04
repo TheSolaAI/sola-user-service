@@ -1,4 +1,3 @@
-from django.db.models import Max
 from drf_spectacular.utils import extend_schema
 from rest_framework import (
     exceptions,
@@ -27,13 +26,16 @@ class ChatRoomViewSet(
     filter_backends = [filters.OrderingFilter]
 
     def get_queryset(self):
-        return (
-            ChatRoom.objects.prefetch_related("messages")
-            .filter(user=self.request.user)
-            .annotate(last_message_created_at=Max("messages__created_at"))
-            .order_by("-last_message_created_at")
-            .distinct()
+        chat_messages = (
+            ChatMessage.objects.filter(
+                room__user=self.request.user,
+            )
+            .order_by("-created_at")
+            .first()
         )
+        if not chat_messages:
+            return ChatRoom.objects.none()
+        return ChatRoom.objects.get(id=chat_messages.room.id)
 
     @extend_schema(exclude=True)
     def update(self, request, *args, **kwargs):
