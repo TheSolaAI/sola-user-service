@@ -1,4 +1,6 @@
-from django.db.models import Max
+from datetime import datetime
+
+from django.db.models import BooleanField, Case, When
 from drf_spectacular.utils import extend_schema
 from rest_framework import (
     exceptions,
@@ -27,12 +29,13 @@ class ChatRoomViewSet(
     filter_backends = [filters.OrderingFilter]
 
     def get_queryset(self):
-        return (
-            ChatRoom.objects.prefetch_related("messages")
-            .filter(user=self.request.user)
-            .annotate(last_message_created_at=Max("messages__created_at"))
-            .order_by("-last_message_created_at")
-            .distinct()
+        return ChatRoom.objects.filter(user=self.request.user).order_by(
+            Case(
+                When(message_updated_at__isnull=True, then=True),
+                default=False,
+                output_field=BooleanField(),
+            ),
+            "-message_updated_at",
         )
 
     @extend_schema(exclude=True)
@@ -62,4 +65,7 @@ class ChatMessageViewSet(
         )
 
     def perform_create(self, serializer) -> None:
+        ChatRoom.objects.filter(id=self.kwargs["room_pk"]).update(
+            message_updated_at=datetime.now()
+        )
         return serializer.save(room_id=self.kwargs["room_pk"])

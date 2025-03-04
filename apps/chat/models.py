@@ -9,6 +9,7 @@ class ChatRoom(models.Model):
     session_id = models.CharField(max_length=100)
     agent_id = models.PositiveSmallIntegerField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chat_rooms")
+    message_updated_at = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
