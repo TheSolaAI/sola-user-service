@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.db.models import BooleanField, Case, When
 from drf_spectacular.utils import extend_schema
 from rest_framework import (
     exceptions,
@@ -28,8 +29,13 @@ class ChatRoomViewSet(
     filter_backends = [filters.OrderingFilter]
 
     def get_queryset(self):
-        return ChatRoom.objects.filter(user=self.request.user).order_by(
-            "-message_updated_at"
+        return ChatRoom.objects.filter(user__id=25).order_by(
+            Case(
+                When(message_updated_at__isnull=True, then=True),
+                default=False,
+                output_field=BooleanField(),
+            ),
+            "-message_updated_at",
         )
 
     @extend_schema(exclude=True)
