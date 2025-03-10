@@ -2,3 +2,6 @@ from . import env
 
 PRIVY_APP_ID = env("PRIVY_APP_ID")
 PRIVY_JWKS_URL = env("PRIVY_JWKS_URL")
+
+PRIVY_APP_ID_2 = env("PRIVY_APP_ID_2")
+PRIVY_JWKS_URL_2 = env("PRIVY_JWKS_URL_2")
