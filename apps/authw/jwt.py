@@ -25,6 +25,8 @@ def verify_privy_jwt(token: str):
             return payload
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError) as e:
             exceptions.append(e)
+        except Exception as e:
+            exceptions.append(e)
 
     # Try to verify with secondary Privy configuration
     if settings.PRIVY_JWKS_URL_2 and settings.PRIVY_APP_ID_2:
@@ -41,6 +43,8 @@ def verify_privy_jwt(token: str):
             )
             return payload
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError) as e:
+            exceptions.append(e)
+        except Exception as e:
             exceptions.append(e)
 
     # If we got here, both verifications failed or weren't attempted
