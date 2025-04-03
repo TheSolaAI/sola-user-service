@@ -1205,15 +1205,13 @@
             "version": "==0.11.1"
         },
         "sentry-sdk": {
-            "extras": [
-                "django"
-            ],
             "hashes": [
-                "sha256:afa82713a92facf847df3c6f63cec71eb488d826a50965def3d7722aa6f0fdab",
-                "sha256:c359a1edf950eb5e80cffd7d9111f3dbeef57994cb4415df37d39fda2cf22364"
+                "sha256:60b016d0772789454dc55a284a6a44212044d4a16d9f8448725effee97aaf7f6",
+                "sha256:f9041b7054a7cf12d41eadabe6458ce7c6d6eea7a97cfe1b760b6692e9562cf0"
             ],
+            "index": "pypi",
             "markers": "python_version >= '3.6'",
-            "version": "==2.20.0"
+            "version": "==2.25.1"
         },
         "six": {
             "hashes": [
